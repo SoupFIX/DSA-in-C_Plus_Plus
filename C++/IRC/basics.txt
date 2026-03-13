@@ -1,0 +1,2 @@
+mutex is a mutual extension to prevent chaos when multipl clients(threads)
+try to create a connection with the server.

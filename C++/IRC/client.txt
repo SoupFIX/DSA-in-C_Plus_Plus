@@ -1,0 +1,53 @@
+#include <iostream>
+#include <unistd.h>
+#include <string.h>
+#include <arpa/inet.h>
+
+#define PORT 8080
+#define MAX 80
+
+int main() {
+    int sockfd;
+    struct sockaddr_in servaddr;
+    char buff[MAX];
+    int n;
+
+    // Create socket
+    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    if (sockfd == -1) {
+        std::cout << "Socket creation failed...\n";
+        return 1;
+    }
+    std::cout << "Socket successfully created..\n";
+    bzero(&servaddr, sizeof(servaddr));
+
+    // Assign IP, PORT
+    servaddr.sin_family = AF_INET;
+    servaddr.sin_addr.s_addr = inet_addr("127.0.0.1");
+    servaddr.sin_port = htons(PORT);
+
+    // Connect to server
+    if (connect(sockfd, (struct sockaddr*)&servaddr, sizeof(servaddr)) != 0) {
+        std::cout << "Connection with the server failed...\n";
+        return 1;
+    }
+    std::cout << "Connected to the server..\n";
+
+    // Chat loop
+    while (true) {
+        bzero(buff, sizeof(buff));
+        std::cout << "To server: ";
+        n = 0;
+        while ((buff[n++] = getchar()) != '\n');
+        write(sockfd, buff, sizeof(buff));
+        bzero(buff, sizeof(buff));
+        read(sockfd, buff, sizeof(buff));
+        std::cout << "From Server: " << buff;
+        if ((strncmp(buff, "exit", 4)) == 0) {
+            std::cout << "Client Exit...\n";
+            break;
+        }
+    }
+    close(sockfd);
+    return 0;
+}

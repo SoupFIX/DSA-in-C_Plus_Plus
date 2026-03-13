@@ -1,0 +1,12 @@
+STEP 1 : CREATE TWO LINKED LISTS WITH HAVING COEFF AND POW
+step 2 : connect the two linked lists 
+step 3 : if list1 is empty then just assign list1 = list2
+step 4 : else do traversing till last element of list1 and join to first element of list2
+if(list1==NULL)
+{
+    list1=list2;
+}  
+step 5 : remove duplicates (add same powers)
+find duplicate AND REMOVE  concept
+//create a pointer 
+check if any duplicate is there or not after the elements

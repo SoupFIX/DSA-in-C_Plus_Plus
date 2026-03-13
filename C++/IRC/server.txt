@@ -1,0 +1,69 @@
+#include <iostream>
+#include <unistd.h>
+#include <string.h>
+#include <arpa/inet.h>
+
+#define PORT 8080
+#define MAX 80
+
+int main() {
+    int sockfd, connfd;
+    struct sockaddr_in servaddr, cli;
+    char buff[MAX];
+    int n;
+
+    // Create socket
+    sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    if (sockfd == -1) {
+        std::cout << "Socket creation failed...\n";
+        return 1;
+    }
+    std::cout << "Socket successfully created..\n";
+    bzero(&servaddr, sizeof(servaddr));
+// Assign IP, PORT
+    
+    servaddr.sin_family = AF_INET;
+    servaddr.sin_addr.s_addr = htonl(INADDR_ANY);
+    servaddr.sin_port = htons(PORT);
+
+    // Bind socket
+    if ((bind(sockfd, (struct sockaddr*)&servaddr, sizeof(servaddr))) != 0) {
+        std::cout << "Socket bind failed...\n";
+        return 1;
+    }
+    std::cout << "Socket successfully binded..\n";
+
+    // Listen
+    if ((listen(sockfd, 5)) != 0) {
+        std::cout << "Listen failed...\n";
+        return 1;
+    }
+    std::cout << "Server listening..\n";
+    socklen_t len = sizeof(cli);
+
+    // Accept data packet from client
+    connfd = accept(sockfd, (struct sockaddr*)&cli, &len);
+    if (connfd < 0) {
+        std::cout << "Server accept failed...\n";
+        return 1;
+    }
+    std::cout << "Server accepted the client...\n";
+
+    // Chat loop
+    while (true) {
+        bzero(buff, MAX);
+        read(connfd, buff, sizeof(buff));
+        std::cout << "From client: " << buff;
+        if (strncmp("exit", buff, 4) == 0) {
+            std::cout << "Server Exit...\n";
+            break;
+        }
+        bzero(buff, MAX);
+        std::cout << "To client: ";
+        n = 0;
+        while ((buff[n++] = getchar()) != '\n');
+        write(connfd, buff, sizeof(buff));
+    }
+    close(sockfd);
+    return 0;
+}   
