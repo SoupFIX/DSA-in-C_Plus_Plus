@@ -5,6 +5,9 @@ Welcome to the **ultimate C++ Data Structures repository!** 🎯
 
 This repo contains **clean, well-commented, beginner-friendly** implementations of all major data structures in **C++**.
 
+## For Installation and setup , Visit :
+###  https://code.visualstudio.com/docs/languages/cpp
+
 ## 📚 Topics Covered
 
 <div align="center">
@@ -24,5 +27,3 @@ This repo contains **clean, well-commented, beginner-friendly** implementations 
 | 11 | 🔁 **Recursion** | Factorial, Fibonacci, Tower of Hanoi, Backtracking | ✅ Complete |
 
 </div>
-## For Installation and setup Visit :
-###  https://code.visualstudio.com/docs/languages/cpp
